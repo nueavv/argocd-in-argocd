@@ -11,7 +11,7 @@ spec:
     command: [sh, -c]
     args: 
       - |
-        kustomize build . | /plugins/istioctl manifest generate -f -
+        /plugins/kustomize build . | /plugins/istioctl manifest generate -f -
   discover:
     fileName: istio*.yaml
   preserveFileMode: false
