@@ -30,8 +30,9 @@ spec:
         - -c
         args:
         - |
-          wget "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
-          bash install_kustomize.sh;
+          wget "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.3.0/kustomize_v5.3.0_linux_arm64.tar.gz"
+          tar -xvf kustomize_v5.3.0_linux_arm64.tar.gz;
+          ls -al;
           mv kustomize /plugins/kustomize;
           chmod +x /plugins/kustomize;
         volumeMounts:
