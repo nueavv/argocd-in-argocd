@@ -3,9 +3,10 @@ kind: ConfigManagementPlugin
 metadata:
   name: istioctl
 spec:
+  version: 1.20.3
   init:
     command: [sh]
-    args: [-c, 'echo "Initializing... $(pwd)"']
+    args: [-c, 'echo "Initializing... "']
   generate:
     command: [sh, -c]
     args: 
