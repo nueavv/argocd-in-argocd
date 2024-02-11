@@ -23,6 +23,17 @@ spec:
         volumeMounts:
           - mountPath: /plugins
             name: istioctl-bin
+      - name: kustomize-download
+        image: registry.k8s.io/kustomize/kustomize:v5.0.0
+        command:
+        - sh
+        - -c
+        args:
+        - |
+          which kustomize;
+        volumeMounts:
+          - mountPath: /plugins
+            name: istioctl-bin
       containers:
       - name: argocd-plugins
         command: [/var/run/argocd/argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server

@@ -15,4 +15,3 @@ spec:
   discover:
     fileName: istio*.yaml
   preserveFileMode: false
-

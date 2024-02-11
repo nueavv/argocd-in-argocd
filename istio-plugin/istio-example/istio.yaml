@@ -1,9 +1,11 @@
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
+metadata:
+  name: istio
 spec:
   components:
     base:
-      enabled: true
+      enabled: false
     cni:
       enabled: false
     egressGateways:
@@ -30,7 +32,7 @@ spec:
     defaultRevision: ""
     gateways:
       istio-egressgateway:
-        autoscaleEnabled: true
+        autoscaleEnabled: false
         env: {}
         name: istio-egressgateway
         secretVolumes:
@@ -42,7 +44,7 @@ spec:
           secretName: istio-egressgateway-ca-certs
         type: ClusterIP
       istio-ingressgateway:
-        autoscaleEnabled: true
+        autoscaleEnabled: false
         env: {}
         name: istio-ingressgateway
         secretVolumes:
