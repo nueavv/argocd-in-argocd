@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: argocd
+
+resources:
+- https://raw.githubusercontent.com/argoproj/argo-cd/v2.9.6/manifests/install.yaml
+# - plugin.yaml
+
+patches:
+- path: ./overlays/argocd-secret.yaml
+- path: ./overlays/argocd-repo-server.yaml
+
+configMapGenerator:
+- files:
+  # - plugins/istioctl-1.20.3.yaml
+  - plugins/plugin.yaml
+  name: argocd-plugins
+generatorOptions:
+  disableNameSuffixHash: true

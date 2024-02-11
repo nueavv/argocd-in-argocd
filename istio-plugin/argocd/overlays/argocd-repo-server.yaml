@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: repo-server
+    app.kubernetes.io/name: argocd-repo-server
+    app.kubernetes.io/part-of: argocd
+  name: argocd-repo-server
+spec:
+  template:
+    spec:
+      initContainers:
+      - name: istio-download
+        image: curlimages/curl:8.6.0
+        command:
+        - sh
+        - -c
+        args:
+        - |
+          curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.20.3 sh -
+          cp -p ~/istio-1.20.3/bin/istioctl /plugins/istioctl
+          chmod +x /plugins/istioctl
+        volumeMounts:
+          - mountPath: /plugins
+            name: istioctl-bin
+      containers:
+      - name: argocd-plugins
+        command: [/var/run/argocd/argocd-cmp-server] # Entrypoint should be Argo CD lightweight CMP server i.e. argocd-cmp-server
+        image: busybox # This can be off-the-shelf or custom-built image
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+        volumeMounts:
+          - mountPath: /var/run/argocd
+            name: var-files
+          - mountPath: /home/argocd/cmp-server/plugins
+            name: plugins
+          # Remove this volumeMount if you've chosen to bake the config file into the sidecar image.
+          - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: plugin.yaml
+            name: argocd-plugins
+          # Starting with v2.4, do NOT mount the same tmp volume as the repo-server container. The filesystem separation helps 
+          # mitigate path traversal attacks.
+          - mountPath: /tmp
+            name: cmp-tmp
+          - mountPath: /plugins
+            name: istioctl-bin
+      volumes:
+      - configMap:
+          name: argocd-plugins
+        name: argocd-plugins
+      - emptyDir: {}
+        name: cmp-tmp
+      - emptyDir: {}
+        name: istioctl-bin

@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ConfigManagementPlugin
+metadata:
+  name: istioctl
+spec:
+  init:
+    command: [sh]
+    args: [-c, 'echo "Initializing... $(pwd)"']
+  generate:
+    command: [sh, -c]
+    args: 
+      - |
+        kustomize build . | /plugins/istioctl manifest generate -f -
+  discover:
+    fileName: istio*.yaml
+  preserveFileMode: false
+
