@@ -5,7 +5,7 @@ metadata:
 spec:
   components:
     base:
-      enabled: false
+      enabled: true
     cni:
       enabled: false
     egressGateways:
