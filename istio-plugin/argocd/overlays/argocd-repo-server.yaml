@@ -24,13 +24,16 @@ spec:
           - mountPath: /plugins
             name: istioctl-bin
       - name: kustomize-download
-        image: registry.k8s.io/kustomize/kustomize:v5.0.0
+        image: busybox
         command:
         - sh
         - -c
         args:
         - |
-          which kustomize;
+          wget "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
+          bash install_kustomize.sh;
+          mv kustomize /plugins/kustomize;
+          chmod +x /plugins/kustomize;
         volumeMounts:
           - mountPath: /plugins
             name: istioctl-bin
